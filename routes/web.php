@@ -19,13 +19,11 @@ use Illuminate\Support\Facades\Route;
     return view('welcome');
 });*/
 
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [\App\Http\Controllers\WeatherAlertController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/subscription/plans', [SubscriptionController::class, 'index'])->name('subscription.plans');
-    Route::post('/subscription/confirm', [SubscriptionController::class, 'index'])->name('subscription.confirm');
+    Route::post('/subscription/confirm', [SubscriptionController::class, 'processSubscription'])->name('subscription.confirm');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

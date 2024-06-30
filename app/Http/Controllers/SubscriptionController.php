@@ -18,4 +18,20 @@ class SubscriptionController extends Controller
         return view('subscription.index',
             compact('plans', 'user', 'intent'));
     }
+    public function processSubscription(Request $request)
+    {
+        $user = Auth::user();
+        $paymentMethod = $request->input('payment_method');
+        $user->createOrGetStripeCustomer();
+        $user->addPaymentMethod($paymentMethod);
+        $plan = $request->input('plan');
+        try {
+            $user->newSubscription('default', $plan)->trialDays(7)->create($paymentMethod, [
+                'email' => $user->email
+            ]);
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => 'Error creating subscription. ' . $e->getMessage()]);
+        }
+        return redirect()->route('dashboard');
+    }
 }

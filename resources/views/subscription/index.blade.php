@@ -6,43 +6,6 @@
         </h2>
     </x-slot>
     <div class="bg-gray-100">
-{{--        <form action="/seller/subscribe" method="POST" id="subscribe-form">--}}
-{{--        <div class="form-group">--}}
-{{--            <div class="row">--}}
-{{--                @foreach($plans as $plan)--}}
-{{--                    <div class="col-md-4">--}}
-{{--                        <div class="subscription-option">--}}
-{{--                            <input type="radio" id="plan-silver" name="plan" value='{{$plan->id}}'>--}}
-{{--                            <label for="plan-silver">--}}
-{{--                                <span class="plan-price">{{$plan->currency}}{{$plan->amount/100}}<small> /{{$plan->interval}}</small></span>--}}
-{{--                                <span class="plan-name">{{$plan->product->name}}</span>--}}
-{{--                            </label>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                @endforeach--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <input id="card-holder-name" type="text"><label for="card-holder-name">Card Holder Name</label>--}}
-{{--        @csrf--}}
-{{--        <div class="form-row">--}}
-{{--            <label for="card-element">Credit or debit card</label>--}}
-{{--            <div id="card-element" class="form-control">--}}
-{{--            </div>--}}
-{{--            <!-- Used to display form errors. -->--}}
-{{--            <div id="card-errors" role="alert"></div>--}}
-{{--        </div>--}}
-{{--        <div class="stripe-errors"></div>--}}
-{{--        @if (count($errors) > 0)--}}
-{{--            <div class="alert alert-danger">--}}
-{{--                @foreach ($errors->all() as $error)--}}
-{{--                    {{ $error }}<br>--}}
-{{--                @endforeach--}}
-{{--            </div>--}}
-{{--        @endif--}}
-{{--        <div class="form-group text-center">--}}
-{{--            <button  id="card-button" data-secret="{{ $intent->client_secret }}" class="btn btn-lg btn-success btn-block">SUBMIT</button>--}}
-{{--        </div>--}}
-{{--    </form>--}}
         <div class="max-w-screen-lg mx-auto p-4">
             <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
                 @foreach($plans as $plan)
@@ -81,14 +44,15 @@
             <div class="bg-white rounded-lg p-8 shadow-lg max-w-md w-full">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-6">Complete Your Payment</h2>
                 <form id="payment-form" method="POST" action="{{ route('subscription.confirm') }}">
+                    @csrf
                     <input type="hidden" name="plan" id="plan_id">
-                    <label for="card-element">Credit or debit card</label>
-                    <div id="card-element" class="mb-4">
+                    <label for="card-element" class="mb-4">Credit or debit card</label>
+                    <div id="card-element" class="mb-6 mt-3">
                         <!-- Stripe.js injects the Card Element here -->
                     </div>
                     <!-- Used to display form errors. -->
                     <div id="card-errors" role="alert"></div>
-                    <button id="submit-button" data-secret="{{ $intent->client_secret }}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" type="submit">Submit Payment</button>
+                    <button id="submit-button" data-secret="{{ $intent->client_secret }}" class="bg-blue-500 self-center text-white py-2 px-4 rounded hover:bg-blue-600" type="submit">Submit Payment</button>
                 </form>
                 <button class="mt-4 text-gray-600 hover:text-gray-800" onclick="closeModal()">Cancel</button>
             </div>
@@ -102,6 +66,9 @@
                 console.log(id)
                 document.getElementById('plan_id').value = id;
                 document.getElementById('payment-form-modal').classList.remove('hidden');
+            }
+            function closeModal() {
+                document.getElementById('payment-form-modal').classList.add('hidden');
             }
             cardElement.addEventListener('change', function(event) {
                 var displayError = document.getElementById('card-errors');
