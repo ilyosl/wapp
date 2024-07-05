@@ -17,11 +17,12 @@ class WeatherServices
 
     public function getWeather($latitude, $longitude)
     {
-        $response = Http::get("https://api.openweathermap.org/data/2.5/onecall", [
-            'lat' => $latitude,
-            'lon' => $longitude,
-            'appid' => $this->apiKey,
-            'units' => 'metric'
+        $response = Http::get("http://api.weatherapi.com/v1/forecast.json", [
+            'key' => $this->apiKey,
+            'q' => 'samarkand',
+//            'lat' => $latitude,
+//            'lon' => $longitude,
+
         ]);
 
         if ($response->successful()) {

@@ -17,9 +17,10 @@ class WeatherAlertController extends Controller
 
 
     public function index(){
-
         $user = Auth::user();
-        return view('dashboard', compact('user'));
+        $data = $this->weatherService->getWeather('123', '123');
+//        dd($data);
+        return view('dashboard', compact('user','data'));
 
     }
 

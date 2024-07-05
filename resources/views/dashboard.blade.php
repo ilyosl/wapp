@@ -11,6 +11,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @if($user->onTrial('default'))
                         You'll get plan, Your trail day will expire on {{ $user->trialEndsAt('default')}}
+                        @livewire('weather-dashboard',['data'=>$data])
                     @else
                         You have to get <a href="{{ route('subscription.plans') }}" class="text-indigo-500">subscription plan</a>
                     @endif
